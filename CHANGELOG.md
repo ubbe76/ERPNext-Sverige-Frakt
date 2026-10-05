@@ -11,3 +11,10 @@ Första versionen som egen app. Frakten låg tidigare i [ERPNext Sverige](https:
 - Fraktartikeln anmäls till ERPNext Sveriges kontoval (konto 3520) med hooken `erpnext_sverige_fraktartiklar`.
 - Vid installation tas modulen Frakt, menyn och ikonen över från ERPNext Sverige; data och inställningar ligger
   kvar.
+
+Nytt i den här versionen:
+
+- **Telefonnummer till avsändare och mottagare**, som Sendify kräver: fältet Telefon i Fraktinställningar
+  (hämtas från avsändarkontakten och krävs när frakten är aktiverad) och Mottagarens telefon på försändelsen.
+  Saknas ett nummer stoppas anropet innan något skickas, med ett meddelande om vilket fält som ska fyllas i.
+- **Logotyp och skrivbordsikon** i appens gröna färger.
