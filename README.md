@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/images/erpnext-sverige-frakt-dark.svg">
+    <img alt="ERPNext Sverige Frakt" src=".github/images/erpnext-sverige-frakt.svg" width="420">
+  </picture>
+</p>
+
 # ERPNext Sverige Frakt
 
 > [!IMPORTANT]
