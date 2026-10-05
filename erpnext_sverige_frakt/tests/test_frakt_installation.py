@@ -1,5 +1,7 @@
 """Fraktappen som egen app: modulen Frakt, menyn och fraktartikeln till bokföringen i ERPNext Sverige."""
 
+import os
+
 import frappe
 from erpnext_sverige.accounting.account_selection import fraktartiklar
 from frappe.tests import IntegrationTestCase
@@ -60,3 +62,10 @@ class TestInstallation(IntegrationTestCase):
 		for rad in meny.items:
 			if rad.type == "Link":
 				self.assertTrue(frappe.db.exists(rad.link_type, rad.link_to), rad.link_to)
+
+	def test_skrivbordsikonen_har_logotypens_farger(self):
+		# Skrivbordet letar efter ikonen under ikonens app (assets/<app>/icons/desktop_icons/<variant>/frakt.svg)
+		mapp = frappe.get_app_path(APP, "public", "icons", "desktop_icons")
+		for variant, farg in (("solid", "#2E9E6B"), ("subtle", "#1F7A50")):
+			with open(os.path.join(mapp, variant, "frakt.svg")) as f:
+				self.assertIn(farg, f.read(), variant)
