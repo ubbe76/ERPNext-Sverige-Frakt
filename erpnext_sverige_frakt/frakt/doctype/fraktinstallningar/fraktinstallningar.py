@@ -8,11 +8,15 @@ from erpnext_sverige_frakt.frakt import hamta_installningar, leverantor, visa_fr
 class Fraktinstallningar(Document):
 	def validate(self):
 		self.validera_upphamtningstider()
+		if not self.avsandartelefon:
+			from erpnext_sverige_frakt.frakt.parter import kontaktens_telefon
+
+			self.avsandartelefon = kontaktens_telefon(self.avsandarkontakt)
 		if not self.aktiverad:
 			return
 		saknas = [
 			self.meta.get_label(falt)
-			for falt in ("bolag", "avsandaradress", "fraktartikel", "upphamtningstider")
+			for falt in ("bolag", "avsandaradress", "avsandartelefon", "fraktartikel", "upphamtningstider")
 			if not self.get(falt)
 		]
 		if not self.api_nyckel:
@@ -60,7 +64,7 @@ def testa_anslutning() -> str:
 def hamta_transportorsprodukter() -> int:
 	"""Prisförfrågan på en exempelsändning (en EUR-pall från avsändaren till sig själv) för att fylla registret."""
 	from erpnext_sverige_frakt.frakt.fraktpris import priser_for_tillfallig_sandning
-	from erpnext_sverige_frakt.frakt.parter import avsandare, forsta_upphamtning
+	from erpnext_sverige_frakt.frakt.parter import avsandare, forsta_upphamtning, kontrollera_telefon
 
 	frappe.only_for(("System Manager", "Stock Manager"))
 	inst = hamta_installningar()
@@ -83,5 +87,6 @@ def hamta_transportorsprodukter() -> int:
 		],
 		"referens_id": "ERPNext exempelsändning",
 	}
+	kontrollera_telefon(sandning)
 	svar = priser_for_tillfallig_sandning(sandning, forsta_upphamtning(inst))
 	return len(svar["priser"])

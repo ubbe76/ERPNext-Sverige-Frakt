@@ -37,9 +37,26 @@ def part(namn, adress, kontakt, privatperson=False) -> dict:
 	}
 
 
+def kontaktens_telefon(kontakt) -> str | None:
+	if not kontakt:
+		return None
+	mobil, telefon = frappe.db.get_value("Contact", kontakt, ["mobile_no", "phone"]) or (None, None)
+	return mobil or telefon
+
+
 def avsandare(inst) -> dict:
 	namn = frappe.db.get_value("Company", inst.bolag, "company_name")
-	return part(namn, inst.avsandaradress, inst.avsandarkontakt)
+	avs = part(namn, inst.avsandaradress, inst.avsandarkontakt)
+	avs["telefon"] = inst.get("avsandartelefon") or avs["telefon"]
+	return avs
+
+
+def kontrollera_telefon(sandning) -> None:
+	"""Transportören kräver telefonnummer; säg var det fylls i innan något skickas."""
+	if not sandning["avsandare"].get("telefon"):
+		frappe.throw(_("Avsändarens telefon saknas. Fyll i Telefon i Fraktinställningar."))
+	if not sandning["mottagare"].get("telefon"):
+		frappe.throw(_("Mottagarens telefon saknas. Fyll i fältet Mottagarens telefon på försändelsen."))
 
 
 VECKODAGAR = ("Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag")
