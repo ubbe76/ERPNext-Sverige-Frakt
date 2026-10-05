@@ -96,4 +96,7 @@ när en sandlådenyckel finns.
 
 ## Licens
 
-GPL-3.0
+Copyright (C) 2026 Urban Källefors
+
+GPL-3.0, samma licens som ERPNext. Se [LICENSE](LICENSE). Koden kommer från ERPNext Sverige (till och med 0.2.0),
+som har samma upphovsman och licens.
