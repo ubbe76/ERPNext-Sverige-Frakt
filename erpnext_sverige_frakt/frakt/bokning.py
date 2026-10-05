@@ -11,6 +11,8 @@ from erpnext_sverige_frakt.frakt.fraktpris import kundpris, registrera_produkter
 from erpnext_sverige_frakt.frakt.kollin import foresla_kollin
 from erpnext_sverige_frakt.frakt.parter import (
 	avsandare,
+	kontaktens_telefon,
+	kontrollera_telefon,
 	kontrollera_upphamtningsdag,
 	nasta_upphamtningsdag,
 	part,
@@ -93,6 +95,7 @@ def skapa_shipment(delivery_note: str) -> str:
 	doc.avsandarens_referens = dn.name
 	doc.mottagarens_referens = dn.po_no
 	doc.fraktprodukt = _forvald_fraktprodukt(dn)
+	doc.mottagartelefon = kontaktens_telefon(doc.delivery_contact_name)
 
 	kollin, varningar = foresla_kollin(_lagerrader([dn.name]))
 	_kontrollera_vikter(kollin, varningar)
@@ -124,14 +127,16 @@ def sandning_fran_shipment(doc) -> dict:
 	kund = frappe.db.get_value(
 		"Customer", doc.delivery_customer, ["customer_name", "customer_type"], as_dict=True
 	)
+	mottagare = part(
+		kund.customer_name,
+		doc.delivery_address_name,
+		doc.delivery_contact_name,
+		privatperson=kund.customer_type == "Individual",
+	)
+	mottagare["telefon"] = doc.get("mottagartelefon") or mottagare["telefon"]
 	return {
 		"avsandare": avsandare(hamta_installningar()),
-		"mottagare": part(
-			kund.customer_name,
-			doc.delivery_address_name,
-			doc.delivery_contact_name,
-			privatperson=kund.customer_type == "Individual",
-		),
+		"mottagare": mottagare,
 		"kollin": [
 			{
 				"kollityp": r.kollityp or "Paket",
@@ -156,6 +161,7 @@ def _synka_sandning(doc) -> str:
 	"""Skapar eller uppdaterar sändningen hos leverantören och returnerar dess id."""
 	lev = leverantor()
 	sandning = sandning_fran_shipment(doc)
+	kontrollera_telefon(sandning)
 	if doc.sendify_id:
 		lev.uppdatera_sandning(doc.sendify_id, sandning)
 	else:

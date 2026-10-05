@@ -134,6 +134,13 @@ def get_custom_fields():
 		],
 		"Shipment": [
 			{
+				"fieldname": "mottagartelefon",
+				"label": "Mottagarens telefon",
+				"fieldtype": "Data",
+				"insert_after": "delivery_contact_name",
+				"description": "Transportören kräver ett telefonnummer till mottagaren. Hämtas från kontakten.",
+			},
+			{
 				"fieldname": "frakt_section",
 				"label": "Fraktbokning",
 				"fieldtype": "Section Break",
