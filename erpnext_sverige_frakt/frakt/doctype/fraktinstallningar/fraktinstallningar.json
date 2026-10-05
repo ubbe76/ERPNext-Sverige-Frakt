@@ -1,0 +1,49 @@
+{
+ "actions": [],
+ "creation": "2026-10-01 10:00:00.000000",
+ "description": "Inställningar för transportbokning via Sendify.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "issingle": 1,
+ "field_order": [
+  "aktiverad", "leverantor", "miljo", "api_nyckel",
+  "avsandare_section", "bolag", "avsandaradress", "avsandarkontakt", "column_break_1", "upphamtningstider",
+  "pris_section", "paslag_procent", "paslag_belopp", "column_break_2", "fraktartikel", "prisandring_grans_procent",
+  "sparning_section", "sparning_intervall", "senaste_sparningskorning"
+ ],
+ "fields": [
+  {"fieldname": "aktiverad", "fieldtype": "Check", "label": "Aktiverad"},
+  {"fieldname": "leverantor", "fieldtype": "Select", "label": "Leverantör", "options": "Sendify", "default": "Sendify", "reqd": 1},
+  {"fieldname": "miljo", "fieldtype": "Select", "label": "Miljö", "options": "Sandlåda\nProduktion", "default": "Sandlåda", "reqd": 1},
+  {"fieldname": "api_nyckel", "fieldtype": "Password", "label": "API-nyckel", "description": "Skapas i Sendify under Settings → API"},
+  {"fieldname": "avsandare_section", "fieldtype": "Section Break", "label": "Avsändare och upphämtning"},
+  {"fieldname": "bolag", "fieldtype": "Link", "label": "Bolag", "options": "Company"},
+  {"fieldname": "avsandaradress", "fieldtype": "Link", "label": "Avsändaradress", "options": "Address"},
+  {"fieldname": "avsandarkontakt", "fieldtype": "Link", "label": "Avsändarkontakt", "options": "Contact"},
+  {"fieldname": "column_break_1", "fieldtype": "Column Break"},
+  {"fieldname": "upphamtningstider", "fieldtype": "Table", "label": "Upphämtningstider", "options": "Upphamtningstid", "description": "En rad per dag med upphämtning. Dagar utan rad och röda dagar i bolagets helglista har ingen upphämtning."},
+  {"fieldname": "pris_section", "fieldtype": "Section Break", "label": "Fraktpris till kund"},
+  {"fieldname": "paslag_procent", "fieldtype": "Percent", "label": "Påslag (%)"},
+  {"fieldname": "paslag_belopp", "fieldtype": "Currency", "label": "Påslag (kr)", "options": "SEK"},
+  {"fieldname": "column_break_2", "fieldtype": "Column Break"},
+  {"fieldname": "fraktartikel", "fieldtype": "Link", "label": "Fraktartikel", "options": "Item", "description": "Icke-lagerförd artikel som frakten faktureras som"},
+  {"fieldname": "prisandring_grans_procent", "fieldtype": "Percent", "label": "Bekräfta prisändring över (%)", "default": "5"},
+  {"fieldname": "sparning_section", "fieldtype": "Section Break", "label": "Spårning"},
+  {"fieldname": "sparning_intervall", "fieldtype": "Select", "label": "Hämta spårning", "options": "Varje timme\nVar fjärde timme\nDagligen", "default": "Varje timme"},
+  {"fieldname": "senaste_sparningskorning", "fieldtype": "Datetime", "label": "Senaste spårningskörning", "read_only": 1}
+ ],
+ "links": [],
+ "modified": "2026-10-03 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Frakt",
+ "name": "Fraktinstallningar",
+ "owner": "Administrator",
+ "permissions": [
+  {"role": "System Manager", "read": 1, "write": 1, "create": 1},
+  {"role": "Stock Manager", "read": 1, "write": 1, "create": 1}
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

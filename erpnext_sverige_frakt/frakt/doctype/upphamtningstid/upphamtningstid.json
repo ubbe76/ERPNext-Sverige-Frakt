@@ -1,0 +1,24 @@
+{
+ "actions": [],
+ "creation": "2026-10-03 14:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "istable": 1,
+ "field_order": ["veckodag", "fran", "till"],
+ "fields": [
+  {"fieldname": "veckodag", "fieldtype": "Select", "label": "Veckodag", "options": "Måndag\nTisdag\nOnsdag\nTorsdag\nFredag\nLördag\nSöndag", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "fran", "fieldtype": "Time", "label": "Från", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "till", "fieldtype": "Time", "label": "Till", "reqd": 1, "in_list_view": 1}
+ ],
+ "links": [],
+ "modified": "2026-10-03 14:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Frakt",
+ "name": "Upphamtningstid",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

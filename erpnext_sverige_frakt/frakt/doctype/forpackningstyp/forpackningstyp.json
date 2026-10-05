@@ -1,0 +1,36 @@
+{
+ "actions": [],
+ "autoname": "field:forpackningstyp_namn",
+ "creation": "2026-10-01 10:00:00.000000",
+ "description": "Pall- och kartongtyper som används för att föreslå kollin.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["forpackningstyp_namn", "kollityp", "stapelbar", "column_break_1", "langd_cm", "bredd_cm", "hojd_cm", "egenvikt_kg", "flakmeter"],
+ "fields": [
+  {"fieldname": "forpackningstyp_namn", "fieldtype": "Data", "label": "Namn", "reqd": 1, "unique": 1, "in_list_view": 1},
+  {"fieldname": "kollityp", "fieldtype": "Select", "label": "Kollityp", "options": "Paket\nPall", "default": "Pall", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "stapelbar", "fieldtype": "Check", "label": "Stapelbar", "default": "1"},
+  {"fieldname": "column_break_1", "fieldtype": "Column Break"},
+  {"fieldname": "langd_cm", "fieldtype": "Float", "label": "Längd (cm)", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "bredd_cm", "fieldtype": "Float", "label": "Bredd (cm)", "reqd": 1, "in_list_view": 1},
+  {"fieldname": "hojd_cm", "fieldtype": "Float", "label": "Höjd (cm)", "reqd": 1, "in_list_view": 1, "description": "Höjd för full förpackning"},
+  {"fieldname": "egenvikt_kg", "fieldtype": "Float", "label": "Egenvikt (kg)"},
+  {"fieldname": "flakmeter", "fieldtype": "Float", "label": "Flakmeter", "description": "Lämna tomt för att låta transportören räkna från måtten"}
+ ],
+ "links": [],
+ "modified": "2026-10-01 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Frakt",
+ "name": "Forpackningstyp",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {"role": "Stock Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "report": 1, "export": 1},
+  {"role": "Stock User", "read": 1, "report": 1},
+  {"role": "Sales User", "read": 1}
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

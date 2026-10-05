@@ -1,0 +1,30 @@
+{
+ "actions": [],
+ "creation": "2026-10-01 10:00:00.000000",
+ "description": "Transportörsprodukter. Skapas automatiskt när priser hämtas.",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": ["leverantor", "transportorskod", "transportor", "produkt"],
+ "fields": [
+  {"fieldname": "leverantor", "fieldtype": "Data", "label": "Leverantör", "reqd": 1, "read_only": 1, "default": "Sendify"},
+  {"fieldname": "transportorskod", "fieldtype": "Data", "label": "Transportörskod", "read_only": 1},
+  {"fieldname": "transportor", "fieldtype": "Data", "label": "Transportör", "reqd": 1, "read_only": 1, "in_list_view": 1, "in_standard_filter": 1},
+  {"fieldname": "produkt", "fieldtype": "Data", "label": "Produkt", "reqd": 1, "read_only": 1, "in_list_view": 1}
+ ],
+ "links": [],
+ "modified": "2026-10-01 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Frakt",
+ "name": "Fraktprodukt",
+ "naming_rule": "By script",
+ "owner": "Administrator",
+ "permissions": [
+  {"role": "Stock Manager", "read": 1, "write": 1, "create": 1, "delete": 1, "report": 1},
+  {"role": "Stock User", "read": 1, "create": 1, "report": 1},
+  {"role": "Sales User", "read": 1, "create": 1}
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "produkt"
+}

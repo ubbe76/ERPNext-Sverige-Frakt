@@ -1,0 +1,24 @@
+{
+ "actions": [],
+ "creation": "2026-10-01 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "istable": 1,
+ "field_order": ["tidpunkt", "status", "beskrivning", "plats"],
+ "fields": [
+  {"fieldname": "tidpunkt", "fieldtype": "Datetime", "label": "Tidpunkt", "in_list_view": 1, "columns": 2},
+  {"fieldname": "status", "fieldtype": "Data", "label": "Status", "in_list_view": 1, "columns": 2},
+  {"fieldname": "beskrivning", "fieldtype": "Data", "label": "Beskrivning", "in_list_view": 1, "columns": 4},
+  {"fieldname": "plats", "fieldtype": "Data", "label": "Plats", "in_list_view": 1, "columns": 2}
+ ],
+ "links": [],
+ "modified": "2026-10-01 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Frakt",
+ "name": "Sparningshandelse",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
