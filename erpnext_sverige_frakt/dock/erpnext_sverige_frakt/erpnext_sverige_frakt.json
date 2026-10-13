@@ -1,0 +1,28 @@
+{
+ "app": "erpnext_sverige_frakt",
+ "creation": "2026-10-13 19:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Dock",
+ "idx": 0,
+ "items": [
+  {
+   "added": 0,
+   "doctype": "Dock Item",
+   "hidden": 0,
+   "icon": "truck",
+   "idx": 1,
+   "link_to": "Frakt",
+   "link_type": "Sidebar",
+   "parentfield": "items",
+   "parenttype": "Dock",
+   "title": "Frakt"
+  }
+ ],
+ "modified": "2026-10-13 19:00:00.000000",
+ "modified_by": "Administrator",
+ "mount_on": "erpnext",
+ "name": "erpnext_sverige_frakt",
+ "owner": "Administrator",
+ "standard": 1,
+ "user": ""
+}
