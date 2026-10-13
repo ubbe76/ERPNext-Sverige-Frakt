@@ -1,9 +1,12 @@
 """Fraktappen som egen app: modulen Frakt, menyn och fraktartikeln till bokföringen i ERPNext Sverige."""
 
+import json
 import os
 
 import frappe
 from erpnext_sverige.accounting.account_selection import fraktartiklar
+from frappe.desk.doctype.desktop_settings.desktop_settings import is_desktop_icons_page
+from frappe.desk.doctype.dock.dock import mounted_apps, resolve_app_dock
 from frappe.tests import IntegrationTestCase
 
 from erpnext_sverige_frakt.install import before_install
@@ -35,11 +38,15 @@ class TestInstallation(IntegrationTestCase):
 		self.assertTrue(frappe.db.exists("DocType", "Fraktinstallningar"))
 
 	def test_before_install_tar_over_meny_och_ikon(self):
-		# Annars tar migrate bort dem som föräldralösa, eftersom ERPNext Sverige inte längre har filerna
-		for doctype in ("Desktop Icon", "Workspace Sidebar"):
+		# Annars tar migrate bort dem som föräldralösa, eftersom ERPNext Sverige inte längre har filerna.
+		# En ny site i Apps-läget (frappe 16.51+) har varken ikonen eller den gamla sidomenyn.
+		doctypes = [d for d in ("Desktop Icon", "Workspace Sidebar") if frappe.db.exists(d, "Frakt")]
+		if not doctypes:
+			self.skipTest("Ingen ikon eller gammal sidomeny att ta över")
+		for doctype in doctypes:
 			frappe.db.set_value(doctype, "Frakt", "app", "erpnext_sverige")
 		before_install()
-		for doctype in ("Desktop Icon", "Workspace Sidebar"):
+		for doctype in doctypes:
 			self.assertEqual(frappe.db.get_value(doctype, "Frakt", "app"), APP, doctype)
 
 	def test_before_install_lamnar_egen_modul(self):
@@ -53,15 +60,32 @@ class TestInstallation(IntegrationTestCase):
 		frappe.db.set_single_value("Fraktinstallningar", "fraktartikel", None)
 		self.assertEqual(fraktartiklar(), set())
 
-	def test_meny_under_erpnext(self):
-		ikon = frappe.get_doc("Desktop Icon", "Frakt")
-		self.assertEqual((ikon.app, ikon.parent_icon, ikon.link_type), (APP, "ERPNext", "Workspace Sidebar"))
-		self.assertFalse(ikon.hidden)
-		meny = frappe.get_doc("Workspace Sidebar", "Frakt")
-		self.assertEqual(meny.app, APP)
+	def test_sidomeny(self):
+		meny = frappe.get_doc("Sidebar", "Frakt")
+		self.assertEqual((meny.app, meny.module, meny.standard), (APP, "Frakt", 1))
 		for rad in meny.items:
 			if rad.type == "Link":
 				self.assertTrue(frappe.db.exists(rad.link_type, rad.link_to), rad.link_to)
+
+	def test_meny_i_erpnext_dockan(self):
+		# Apps-läget (standard på nya siter från frappe 16.51)
+		self.assertEqual(mounted_apps().get(APP), "erpnext")
+		self.assertIn(
+			("Sidebar", "Frakt"),
+			[(e["link_type"], e["link_to"]) for e in resolve_app_dock("erpnext", gated=False)],
+		)
+
+	def test_ikon_under_erpnext(self):
+		# Ikonläget ("Desktop Icons")
+		with open(frappe.get_app_path(APP, "desktop_icon", "frakt.json")) as f:
+			ikon = json.load(f)
+		self.assertEqual(
+			(ikon["app"], ikon["parent_icon"], ikon["link_type"], ikon["link_to"]),
+			(APP, "ERPNext", "Workspace Sidebar", "Frakt"),
+		)
+		if is_desktop_icons_page():
+			self.assertEqual(frappe.db.get_value("Desktop Icon", "Frakt", "parent_icon"), "ERPNext")
+			self.assertFalse(frappe.db.get_value("Desktop Icon", "Frakt", "hidden"))
 
 	def test_skrivbordsikonen_har_logotypens_farger(self):
 		# Skrivbordet letar efter ikonen under ikonens app (assets/<app>/icons/desktop_icons/<variant>/frakt.svg)
