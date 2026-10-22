@@ -2,6 +2,7 @@ from contextlib import contextmanager
 from unittest.mock import patch
 
 import frappe
+from erpnext_sverige.tests.utils import ensure_test_company
 from frappe.tests import IntegrationTestCase
 
 from erpnext_sverige_frakt.frakt import FraktFel, bokning
@@ -34,6 +35,13 @@ TOM_PDF = _tom_pdf()
 
 
 class FraktTestCase(IntegrationTestCase):
+	@classmethod
+	def setUpClass(cls):
+		super().setUpClass()
+		# Grunduppsättningen committar. I setUp görs commit om till en savepoint, så den skulle rullas
+		# tillbaka när klassen är klar och saknas för senare testklasser (t.ex. momskategorin).
+		ensure_test_company()
+
 	def setUp(self):
 		commit_som_savepoint(self)
 		aktivera_frakt()
